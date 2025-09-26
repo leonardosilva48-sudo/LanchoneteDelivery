@@ -11,16 +11,20 @@ public abstract class Item {
         this.id = id;
         this.nome = nome;
     }
+
     // Encapsulamento: campos privados com getters
     public String getId() {
         return id;
     }
+
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
+
     // Abstração: cada Item sabe como calcular seu preço,
     // mas a implementação é deixada para as subclasses.
     public abstract double getPreco();
@@ -29,6 +33,7 @@ public abstract class Item {
     public String getDescricao() {
         return nome;
     }
+
     @Override
     public String toString() {
         return getDescricao() + " - R$ " + String.format("%.2f", getPreco());
