@@ -55,7 +55,7 @@ public class ComboItem extends Item {
         double calcDesconto = sum * (desconto / 100.0);
 
         // Se o cliente está comprando mais de um combo, aplica desconto adicional
-        double descontoExtra = 0.0;
+        double descontoExtra = 0.0;// não esta sendo usada
         if (quantidade > 1) {
             // Exemplo: aplica DESCONTO_ADICIONAL% para cada combo extra
             double descontoAdicionalPercentual = DESCONTO_ADICIONAL * (quantidade - 1);
