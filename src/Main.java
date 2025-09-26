@@ -15,12 +15,12 @@ public class Main {
 
         // Pedido (polimorfismo: aceita qualquer Item)
         Pedido pedido = new Pedido(c);
-        pedido.addItem(burger);           // sobrecarga: addItem(item)
-        pedido.addItem(cola, 2);          // sobrecarga: addItem(item, quantidade)
-        pedido.addItem(combo);            // adiciona o combo (ComboItem é um Item)
+        pedido.addItem(burger); // sobrecarga: addItem(item)
+        pedido.addItem(cola, 2); // sobrecarga: addItem(item, quantidade)
+        pedido.addItem(combo); // adiciona o combo (ComboItem é um Item)
 
         // Imprime recibo
-        order.printRecibo();
+        pedido.printRecibo();
 
         // Saída esperada mostrada abaixo.
     }

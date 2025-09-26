@@ -1,63 +1,58 @@
-// Pedido.java
+
+// ComboItem.java
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pedido {
-    private Cliente cliente;
-    private List<LinhaPedido> linhas = new ArrayList<>();
+public class ComboItem extends Item {
+    private List<Item> items = new ArrayList<>();
+    private double desconto; // ex: 10 = 10%
 
-    public Pedido(Cliente cliente) {
-        this.cliente = cliente;
+    public ComboItem(String id, String nome, double desconto) {
+        super(id, nome);
+        setDesconto(desconto);
     }
 
-    // Polimorfismo de compilação: sobrecarga (addItem) - um exemplo de polimorfismo em tempo de 
-    // compilação
     public void addItem(Item item) {
-        addItem(item, 1);
+        if (item == null)
+            throw new IllegalArgumentException("item nulo");
+        items.add(item);
     }
 
-    public void addItem(Item item, int quantidade) {
-        if (item == null) throw new IllegalArgumentException("item nulo");
-        if (quantidade <= 0) throw new IllegalArgumentException("quantidade deve ser >= 1");
-        lines.add(new LinhaPedido(item, quantidade));
+    public List<Item> getItems() {
+        return new ArrayList<Item>(items); // cópia para proteger lista interna
     }
 
-    public double getTotal() {
-        double total = 0.0;
-        for (LinhaPedido lp : linhas) {
-            total += lp.getItem().getPreco() * lp.getQuantidade(); // chama getPrice() 
-                                                                   // polimorficamente
-        }
-        return total;
+    public double getDesconto() {
+        return desconto;
     }
 
-    public void printRecibo() {
-        System.out.println("Pedido para: " + cliente);
-        System.out.println("------------------------------");
-        for (LinhaPedido lp : linhas) {
-            System.out.println(ol.getQuantidade() + " x " + ol.getItem().toString());
-        }
-        System.out.println("------------------------------");
-        System.out.println("Total: R$ " + String.format("%.2f", getTotal()));
+    public void setDesconto(double desconto) {
+        if (desconto < 0 || desconto > 100)
+            throw new IllegalArgumentException("desconto inválido");
+        this.desconto = desconto;
     }
 
-    // Classe interna para representar linha do pedido (encapsula a associação item+quantidade)
-    private static class OrderLine {
-        private Item item;
-        private int quantidade;
-
-        public LinhaPedido(Item item, int quantidade) {
-            this.item = item;
-            this.quantidade = quantidade;
+    // Polimorfismo em ação: calcula preço com base nos preços dos itens (getPrice
+    // de cada Item)
+    @Override
+    public double getPreco() {
+        double sum = 0.0;
+        for (Item it : items) {
+            sum += it.getPreco(); // chama a implementação correta em runtime
         }
+        double calcDesconto = sum * (desconto / 100.0);
+        return sum - calcDesconto;
+    }
 
-        public Item getItem() {
-            return item;
+    @Override
+    public String getDescricao() {
+        StringBuilder sb = new StringBuilder(super.getNome() + " (Combo: ");
+        for (Item it : items) {
+            sb.append(it.getNome()).append(", ");
         }
-
-        public int getQuantidade() {
-            return quantidade;
-        }
+        if (!items.isEmpty())
+            sb.setLength(sb.length() - 2);
+        sb.append(") - ").append(desconto).append("% off");
+        return sb.toString();
     }
 }
-
